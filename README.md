@@ -69,7 +69,7 @@ The Aws lambda IDE for nodeJS does not allow us to install our npm packages on t
 2. If you want to create the zip, the content is present inside this repo where there are a nodemailer dependency and some code to send an email. Make sure to npm install and create a zip from the root directory including your node_modules folder.
 3. Once you got the Zip, upload it to the AWS lambda using Actions -> Upload a .zip file option.
 
-<img width="957" alt="lambda_upload" src="https://user-images.githubusercontent.com/122258630/211993167-b0281330-93f2-47c3-8bc2-a62fee567e43.PNG">
+<img width="957" alt="lambda_upload" src="https://user-images.githubusercontent.com/122258630/211993503-7c5bda98-c4af-4a26-a60c-1525eee6bd74.PNG">
 
 4. If you open index.js you should be able to see the code where we have given our Email credentials and sending an email.
 5. Headers are set to handle CORS errors if you try hitting your lambda from another origin.
