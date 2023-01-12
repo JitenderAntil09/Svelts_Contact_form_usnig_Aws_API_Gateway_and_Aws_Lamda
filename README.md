@@ -74,6 +74,75 @@ The Aws lambda IDE for nodeJS does not allow us to install our npm packages on t
 4. If you open index.js you should be able to see the code where we have given our Email credentials and sending an email.
 5. Headers are set to handle CORS errors if you try hitting your lambda from another origin.
 
+# 4.Setup Amazon SES
+
+Amazon SES requires that you verify your identities (the domains or email addresses that you send email from) to confirm that you own them, and to prevent unauthorized use. Follow the steps outlined in the Amazon SES user guide to verify your sender e-mail.
+
+<img width="951" alt="SES_Email" src="https://user-images.githubusercontent.com/122258630/211995965-c472aa27-c413-40cb-a792-1faf5722d209.PNG">
+
+# 5.Creating AWS API Gateway:
+
+1. Create an API to expose this lambda function as a service.
+2. Click on Services -> API gateway service from the search bar -> Create API -> REST API -> Build -> API name -> Create.
+3. You should be on this screen now.
+
+<img width="948" alt="API" src="https://user-images.githubusercontent.com/122258630/211997975-3cead21e-4388-49e1-adc0-b76614d3c2d3.PNG">
+
+<img width="947" alt="api_created" src="https://user-images.githubusercontent.com/122258630/211997546-593b6c64-376c-4486-9455-36a2525d1039.PNG">
+
+<img width="946" alt="api_resource" src="https://user-images.githubusercontent.com/122258630/211997901-a95f6107-9165-45ae-b63e-1bd5e0195d83.PNG">
+
+4. We need two methods to be created. 1.POST and 2.OPTIONS to handle CORS.
+
+# Creating POST:
+
+1. Actions -> Create Method -> POST -> TICK -> Integration type -> Lambda -> Lambda Function -> emailer -> Save -> OK.
+
+<img width="947" alt="api_lambda" src="https://user-images.githubusercontent.com/122258630/211998506-eecdd95c-5394-4da8-b74a-90cb03d73226.PNG">
+
+2. We need to allow few Headers so that they could be read by the client.
+3. Method Response -> Expand the Accordion next to 200.
+
+<img width="946" alt="api_header" src="https://user-images.githubusercontent.com/122258630/211998996-19e297a2-3197-4596-ace2-a3e9f16b2a07.PNG">
+
+4. Add the following headers
+
+<img width="475" alt="header" src="https://user-images.githubusercontent.com/122258630/211999340-8838a3a4-a665-4cb8-82c2-09785f924805.PNG">
+
+5. Go to Integration Response -> Expand Accordion -> Header Mappings -> Make the following.
+
+<img width="473" alt="header_domain" src="https://user-images.githubusercontent.com/122258630/211999526-8126ab0d-db1b-46a3-abba-9429e7cecdd2.PNG">
+
+6. If you have multiple headers being passed from your API, in order to consume them you have to enable it here.
+7. You can now do a test from the TEST option -> pass the following in the body.
+
+<img width="475" alt="test" src="https://user-images.githubusercontent.com/122258630/211999730-764df0e0-1ad6-4d13-9a2b-28c6703ac7ff.PNG">
+
+8. Click on Test -> you should get an Email with "HELLO" in the Message.
+9. Actions -> Deploy API -> Deployment Stage (New Stage) -> Dev as Stage Name -> Deploy.
+10. Your POST API is Now deployed.
+11. Copy the INVOKE URL.
+12. POST call this INVOKE URL with message param in body to send the email.
+
+# Connecting it all Together
+
+Since we created our AWS Lambda function and provided the API-endpoint access using API gateway, it’s time to connect all the pieces together and test them.
+
+<img width="947" alt="trigger_api" src="https://user-images.githubusercontent.com/122258630/212000793-8282116a-aa82-4cfe-8b11-97d94e29ce11.PNG">
+
+now API_Gateway has been added as a triiger in lambda function.
+So now finally go to postman and select post method and enter the api url into postman and in body section add the code which is shown in the following attachements.
+
+<img width="954" alt="postman_api" src="https://user-images.githubusercontent.com/122258630/212001972-bf39d6af-a44e-4a32-a525-d9bbb8098ea1.PNG">
+
+finally i Got the mail in my mail box as shown in the attachement.
+
+<img width="960" alt="mail" src="https://user-images.githubusercontent.com/122258630/212002203-8afc5cc8-1ba3-46ef-9bc3-fa23c4e1d121.PNG">
+
+Now you should be able to submit your contact form and start receiving email notifications when a form is completed and submitted.
+
+
+
 
 
 
